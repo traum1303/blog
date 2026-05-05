@@ -1,0 +1,33 @@
+{
+  "name": "blog/php-blog",
+  "description": "Blog",
+  "type": "project",
+  "require": {
+    "php": ">=8.1",
+    "smarty/smarty": "^4.5",
+    "fakerphp/faker": "^1.24",
+    "symfony/var-dumper": "^6.4",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Database\\": "database/"
+    },
+    "files": [
+      "app/helpers.php"
+    ]
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "echo 'Composer install completed'"
+    ],
+    "phpstan": "phpstan analyse -c phpstan.neon",
+    "rector": "vendor/bin/rector process app",
+    "seed" : "php database/seed.php"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "rector/rector": "^2.4"
+  }
+}
