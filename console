@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+const BASE_PATH = __DIR__;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$argv = $GLOBALS['argv'] ?? $_SERVER['argv'] ?? [];
+
+try {
+    $kernel = new \App\Core\Console\ConsoleKernel(__DIR__);
+    $exitCode = $kernel->run($argv);
+    exit($exitCode);
+} catch (Throwable $e) {
+    fwrite(STDERR, 'Error: ' . $e->getMessage() . PHP_EOL);
+    exit(1);
+}
+

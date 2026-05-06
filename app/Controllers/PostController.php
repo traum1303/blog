@@ -3,13 +3,11 @@
 namespace App\Controllers;
 
 use App\Core\Request;
-use App\Repositories\PostRepository;
 use App\Services\PaginationFactory;
 use App\Services\PostService;
 
 class PostController extends AbstractController {
     public function __construct(
-        private readonly PostRepository    $postRepository,
         private readonly PostService       $postService,
         private readonly PaginationFactory $paginationFactory,
         \Smarty                            $smarty
@@ -30,10 +28,8 @@ class PostController extends AbstractController {
 
     public function show(Request $request, int $id): void
     {
-        $post = $this->postRepository->findWithCategories($id);
-        $post->incrementViews();
-        $this->postRepository->incrementViews($post);
-        $related = $this->postRepository->getRelatedPosts($id, 3);
+        $post = $this->postService->getPostWithIncrementingViews($id);
+        $related = $this->postService->getRelatedPosts($id, 3);
         $this->smarty
             ->assign('post', $post)
             ->assign('related', $related)

@@ -9,7 +9,6 @@ use ReflectionNamedType;
 use RuntimeException;
 use Smarty;
 
-
 class Application
 {
     private array $bindings = [];
