@@ -12,8 +12,8 @@ class PostController extends AbstractController {
         private readonly PostRepository    $postRepository,
         private readonly PostService       $postService,
         private readonly PaginationFactory $paginationFactory,
-        \Smarty                            $smarty)
-    {
+        \Smarty                            $smarty
+    ) {
         parent::__construct($smarty);
     }
 
@@ -31,6 +31,7 @@ class PostController extends AbstractController {
     public function show(Request $request, int $id): void
     {
         $post = $this->postRepository->findWithCategories($id);
+        $post->incrementViews();
         $this->postRepository->incrementViews($post);
         $related = $this->postRepository->getRelatedPosts($id, 3);
         $this->smarty
