@@ -8,9 +8,6 @@ use RuntimeException;
 
 final class MakeMigrationCommand implements CommandHandler
 {
-    public function __construct(private readonly string $projectRoot)
-    {
-    }
 
     public function handle(array $argv): int
     {
@@ -19,7 +16,7 @@ final class MakeMigrationCommand implements CommandHandler
             throw new InvalidArgumentException('Missing migration name. Example: make:migration create_users_table');
         }
 
-        $dir = $this->projectRoot . '/database/migrations';
+        $dir = base_path('database/migrations') ;
         if (!is_dir($dir) && !mkdir($dir, 0775, true) && !is_dir($dir)) {
             throw new RuntimeException("Cannot create migrations directory: {$dir}");
         }

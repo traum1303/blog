@@ -2,6 +2,7 @@
 
 namespace App\Core\Console\Commands;
 
+use App\Core\Application;
 use App\Core\Console\CommandHandler;
 use App\Core\Migrations\MigrationRepository;
 use App\Core\Migrations\Migrator;
@@ -9,11 +10,16 @@ use PDO;
 
 final class MigrateCommand implements CommandHandler
 {
+    private PDO $db;
+
+    public function __construct(PDO $db)
+    {
+        $this->db = $db;
+    }
+
     public function handle(array $argv): int
     {
-        $app = require __DIR__ . '/../../../../bootstrap/app.php';
-        $db = $app->make(PDO::class);
-        $migrator = new Migrator($db, new MigrationRepository($db));
+        $migrator = new Migrator($this->db, new MigrationRepository($this->db));
         $applied = $migrator->migrate(base_path('database/migrations'));
 
         if ($applied === []) {

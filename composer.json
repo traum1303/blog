@@ -16,8 +16,7 @@
       "Database\\": "database/"
     },
     "files": [
-      "app/helpers.php",
-      "database/seed.php"
+      "app/helpers.php"
     ]
   },
   "scripts": {

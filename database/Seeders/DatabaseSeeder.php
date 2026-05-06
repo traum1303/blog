@@ -40,7 +40,7 @@ class DatabaseSeeder
                 try {
                     $this->postRepo->attachCategory($postId, $categoryId);
                 }catch (\PDOException $e){
-                    echo $e->getMessage();
+                    echo 'this post already belongs to the category'.PHP_EOL;
                 }
             }
         }

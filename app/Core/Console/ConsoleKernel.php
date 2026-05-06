@@ -2,6 +2,7 @@
 
 namespace App\Core\Console;
 
+use App\Core\Application;
 use App\Core\Console\Commands\MakeMigrationCommand;
 use App\Core\Console\Commands\MigrateCommand;
 use App\Core\Console\Commands\SeedCommand;
@@ -9,7 +10,7 @@ use InvalidArgumentException;
 
 final class ConsoleKernel
 {
-    public function __construct(private readonly string $projectRoot)
+    public function __construct(private readonly string $projectRoot, private readonly Application $app)
     {
     }
 
@@ -23,9 +24,9 @@ final class ConsoleKernel
         }
 
         $handlers = [
-            'migrate' => new MigrateCommand(),
-            'seed' => new SeedCommand(),
-            'make:migration' => new MakeMigrationCommand($this->projectRoot),
+            'migrate' => $this->app->make(MigrateCommand::class),
+            'seed' => $this->app->make(SeedCommand::class),
+            'make:migration' => $this->app->make(MakeMigrationCommand::class)
         ];
 
         $handler = $handlers[$command] ?? null;

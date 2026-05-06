@@ -50,9 +50,17 @@ class Application
     }
 
 
-    public function basePath(string $path = ''): string
+    public function get(string $class)
     {
-        return $this->basePath . ($path ? '/' . $path : '');
+        if (array_key_exists($class, $this->singletons) && $this->singletons[$class] !== null) {
+            return $this->singletons[$class];
+        }
+
+        if (array_key_exists($class, $this->bindings) && $this->bindings[$class] !== null) {
+            return $this->bindings[$class];
+        }
+
+        return null;
     }
 
     public function config(string $key)
@@ -65,15 +73,18 @@ class Application
         $provider::register($this, ...$params);
     }
 
-    public function bind(string $abstract, string $concrete)
+    public function bind(string $abstract, string $concrete): void
     {
         $this->bindings[$abstract] = $concrete;
     }
 
-    public function singleton(string $abstract, $concrete)
+    public function singleton(string $abstract, $concrete): void
     {
-        $this->bindings[$abstract] = $concrete;
-        $this->singletons[$abstract] = null;
+        if ($concrete instanceof \Closure) {
+            $this->singletons[$abstract] = $concrete->call($this);
+            return;
+        }
+        $this->singletons[$abstract] = $concrete;
     }
 
     public function make(string $abstract)

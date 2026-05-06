@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 const BASE_PATH = __DIR__;
 
-require __DIR__ . '/vendor/autoload.php';
+$app = require __DIR__ . '/bootstrap/app.php';
 
 $argv = $GLOBALS['argv'] ?? $_SERVER['argv'] ?? [];
 
 try {
-    $kernel = new \App\Core\Console\ConsoleKernel(__DIR__);
+    $kernel = new \App\Core\Console\ConsoleKernel(BASE_PATH, $app);
     $exitCode = $kernel->run($argv);
     exit($exitCode);
 } catch (Throwable $e) {
